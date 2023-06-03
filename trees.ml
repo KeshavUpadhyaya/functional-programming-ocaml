@@ -22,3 +22,17 @@ let rec mem x = function
 let rec preorder = function
   | Leaf -> []
   | Node { value; left; right } -> [ value ] @ preorder left @ preorder right
+
+type 'a tree = Leaf | Node of 'a * 'a tree * 'a tree
+
+let rec map f = function
+  | Leaf -> Leaf
+  | Node (v, l, r) -> Node (f v, map f l, map f r)
+
+let add1 t = map succ t
+
+let rec fold acc f = function
+  | Leaf -> acc
+  | Node (v, l, r) -> f v (fold acc f l) (fold acc f r)
+
+let sum t = fold 0 (fun x y z -> z + y + z) t
